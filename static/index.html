@@ -1,0 +1,46 @@
+<script>
+
+    var URL = "http://192.168.5.45:80"
+    function upload(){
+        console.log("upload started");
+
+        var fileInput = document.getElementById('fileInput');
+        var dirField = document.getElementById('dirInput');
+        var statusField = document.getElementById('status');
+        for(var i = 0; i < fileInput.files.length; i++) {
+            var file = fileInput.files[i];
+            var dirValue = dirField.value;
+            console.log(file)
+            var formData = new FormData();
+            formData.append('file', file);
+            formData.append('dir', dirValue);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', URL + '/api/upload');
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    console.log("succesful upload");
+                    statusField.innerText = "Succes";
+                } else {
+                    console.log("fail upload");
+                    statusField.innerText = "Error: " + xhr.status;
+                }
+            };
+            xhr.send(formData);
+        };
+    }
+</script>
+
+
+<html>
+    <head>
+        <title>Upload dancing video</title>
+    </head>
+    <body>
+        <h1>choose the file</h1>
+        <input type="text" id="dirInput"><br></br>
+        <input type="file" id="fileInput" name="myfile" multiple="multiple">
+        <button onclick="upload()">Upload</button><br></br>
+        Status: <div id="status"></div>
+    </body>
+</html>
