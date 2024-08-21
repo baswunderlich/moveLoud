@@ -3,11 +3,11 @@
     var URL = "http://192.168.5.45:80"
     function upload(){
         console.log("upload started");
-        statusField.innerText = "Loading...";
 
         var fileInput = document.getElementById('fileInput');
         var dirField = document.getElementById('dirInput');
         var statusField = document.getElementById('status');
+        statusField.innerText = "Loading...";
         for(var i = 0; i < fileInput.files.length; i++) {
             var file = fileInput.files[i];
             var dirValue = dirField.value;
