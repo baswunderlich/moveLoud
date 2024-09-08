@@ -8,6 +8,7 @@
         var dirField = document.getElementById('dirInput');
         var statusField = document.getElementById('status');
         statusField.innerText = "Loading...";
+        var errorWhenUploading = false;
         for(var i = 0; i < fileInput.files.length; i++) {
             var file = fileInput.files[i];
             var dirValue = dirField.value;
@@ -19,12 +20,17 @@
             var xhr = new XMLHttpRequest();
             xhr.open('POST', URL + '/api/upload');
             xhr.onload = function () {
-                if (xhr.status === 200) {
-                    console.log("succesful upload");
-                    statusField.innerText = "Succes";
-                } else {
-                    console.log("fail upload");
-                    statusField.innerText = "Error: " + xhr.status;
+                if ((xhr.status < 200 || xhr.status > 299) && !errorWhenUploading){
+                    errorWhenUploading = true
+                }
+                if (i == fileInput.files.length){
+                    if (errorWhenUploading) {
+                        console.log("an upload threw errors");
+                        statusField.innerText = "Error: " + xhr.status;
+                    } else {
+                        console.log("all uploads were succesful");
+                        statusField.innerText = "Succes";
+                    }
                 }
             };
             xhr.send(formData);
